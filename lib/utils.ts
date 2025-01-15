@@ -1,6 +1,5 @@
- /* eslint-disable prefer-const */
-/** * eslint-disable no-prototype-builtins */
-
+/* eslint-disable prefer-const */
+/* eslint-disable no-prototype-builtins */
 import { type ClassValue, clsx } from "clsx";
 import qs from "qs";
 import { twMerge } from "tailwind-merge";
@@ -85,23 +84,14 @@ export function removeKeysFromQuery({
   return `${window.location.pathname}?${qs.stringify(currentUrl)}`;
 }
 
-export const debounce = <T extends (...args: unknown[]) => void>(
-  func: T,
-  delay: number
-): ((...args: Parameters<T>) => void) => {
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
-
-  return (...args: Parameters<T>) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    timeoutId = setTimeout(() => {
-      func(...args);
-    }, delay);
+// DEBOUNCE
+export const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timeoutId: NodeJS.Timeout | null;
+  return (...args: any[]) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(null, args), delay);
   };
 };
-
 
 // GE IMAGE SIZE
 export type AspectRatioKey = keyof typeof aspectRatioOptions;
@@ -140,9 +130,8 @@ export const download = (url: string, filename: string) => {
     .catch((error) => console.log({ error }));
 };
 
-
 // DEEP MERGE OBJECTS
-export const deepMergeObjects = (obj1:any, obj2:any) => {
+export const deepMergeObjects = (obj1: any, obj2: any) => {
   if(obj2 === null || obj2 === undefined) {
     return obj1;
   }
